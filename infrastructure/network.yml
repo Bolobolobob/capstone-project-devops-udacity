@@ -41,10 +41,11 @@ Resources:
         Type: AWS::EC2::VPC
         Properties:
             CidrBlock: !Ref VPCCIDR
+            EnableDnsSupport: true
             EnableDnsHostnames: true
             Tags:
                 - Key: Name
-                  Value: !Ref EnvName
+                  Value: !Sub '${EnvName}-VPC'
 
     PublicSubnet1:
         Type: AWS::EC2::Subnet
@@ -56,6 +57,8 @@ Resources:
             Tags:
                 - Key: Name
                   Value: !Sub $(EnvName) Public Subnet 1
+                - Key: kubernetes.io/role/elb
+                  Value: 1
 
     PublicSubnet2:
         Type: AWS::EC2::Subnet
@@ -67,6 +70,8 @@ Resources:
             Tags:
                 - Key: Name
                   Value: !Sub $(EnvName) Public Subnet 2
+                - Key: kubernetes.io/role/elb
+                  Value: 1
 
     PrivateSubnet1:
         Type: AWS::EC2::Subnet
@@ -74,10 +79,11 @@ Resources:
             VpcId: !Ref VPC
             AvailabilityZone: !Select [0, !GetAZs '']
             CidrBlock: !Ref PrivateSubnet1CIDR
-            MapPublicIpOnLaunch: true
             Tags:
                 - Key: Name
                   Value: !Sub $(EnvName) Private Subnet 1
+                - Key: kubernetes.io/role/internal-elb
+                  Value: 1
 
     PrivateSubnet2:
         Type: AWS::EC2::Subnet
@@ -85,10 +91,11 @@ Resources:
             VpcId: !Ref VPC
             AvailabilityZone: !Select [1, !GetAZs '']
             CidrBlock: !Ref PrivateSubnet2CIDR
-            MapPublicIpOnLaunch: true
             Tags:
                 - Key: Name
                   Value: !Sub $(EnvName) Private Subnet 2
+                - Key: kubernetes.io/role/internal-elb
+                  Value: 1
 
     InternetGateway:
         Type: AWS::EC2::InternetGateway
@@ -202,6 +209,12 @@ Resources:
         Properties:
             RouteTableId: !Ref PrivateRouteTable2
             SubnetId: !Ref PrivateSubnet2
+    
+    ControlPlaneSecurityGroup:
+        Type: AWS::EC2::SecurityGroup
+        Properties:
+            GroupDescription: Cluster communication with worker nodes
+            VpcId: !Ref VPC
 
 Outputs:
 
@@ -264,3 +277,9 @@ Outputs:
         Value: !Ref PrivateSubnet2
         Export:
           Name: !Sub ${EnvName}-PRI2-SN
+    
+    SubnetIds:
+        Description: Subnets IDs in the VPC
+        Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2, !Ref PrivateSubnet1, !Ref PrivateSubnet2 ] ]
+        Export:
+            Name: !Sub ${EnvName}-SUBNETS
