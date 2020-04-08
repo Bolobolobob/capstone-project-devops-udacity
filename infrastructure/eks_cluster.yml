@@ -1,0 +1,23 @@
+Description: >
+  Charles Gery / Udacity
+  Deploy a High-Availability Web App using CloudFormation
+  This template deploys the eks cluster of the project
+
+Parameters:
+  EnvName:
+    Description: Name of the environment
+    Type: String
+    Default: UdacityProject
+
+Resources:
+
+  EKSCluster:
+    Type: "AWS::EKS::Cluster"
+    Properties:
+      Name: !Join [ "", [ !Ref 'AWS::StackName', "-EKS-Cluster" ] ]
+      ResourcesVpcConfig:
+        SecurityGroupIds:
+          Fn::ImportValue: !Sub "${EnvName}-CPSG"
+        SubnetIds:
+          Fn::ImportValue: !Sub "${EnvName}-SUBNETS"
+      RoleArn: arn:aws:iam::244468422315:role/eksRole
