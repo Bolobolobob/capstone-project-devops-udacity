@@ -1,7 +1,7 @@
 [
 	{
 		"ParameterKey": "EnvName",
-		"ParameterValue": "UdacityCloudFormationProject"
+		"ParameterValue": "CapstoneUdacity"
 	},
 	{
 		"ParameterKey": "VPCCIDR",
