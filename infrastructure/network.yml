@@ -283,3 +283,9 @@ Outputs:
         Value: !Join [ ",", [ !Ref PublicSubnet1, !Ref PublicSubnet2, !Ref PrivateSubnet1, !Ref PrivateSubnet2 ] ]
         Export:
             Name: !Sub ${EnvName}-SUBNETS
+    
+    SecurityGroups:
+        Description: Security group for the cluster control plane communication with worker nodes
+        Value: !Join [ ",", [ !Ref ControlPlaneSecurityGroup ] ]
+        Export:
+            Name: !Sub ${EnvName}-CPSG
