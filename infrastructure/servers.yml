@@ -97,10 +97,12 @@ Resources:
               FromPort: 1025
               ToPort: 65535
               Description: Allow traffic from control plane
+              CidrIp: 0.0.0.0/0
             - IpProtocol: tcp
               FromPort: 443
               ToPort: 443
               Description: Allow traffic from control plane
+              CidrIp: 0.0.0.0/0
             SecurityGroupEgress:
             - IpProtocol: tcp
               FromPort: 0
@@ -110,10 +112,12 @@ Resources:
               FromPort: 1025
               ToPort: 65535
               Description: Allow traffic to control plane
+              CidrIp: 0.0.0.0/0
             - IpProtocol: tcp
               FromPort: 443
               ToPort: 443
               Description: Allow traffic to control plane
+              CidrIp: 0.0.0.0/0
     
     LaunchConfig:
         Type: AWS::AutoScaling::LaunchConfiguration
