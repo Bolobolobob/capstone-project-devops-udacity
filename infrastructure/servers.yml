@@ -25,12 +25,12 @@ Parameters:
         Type: String
         Default: 0.0.0.0/0
     
-    WSIngressCIDR:
+    NodesIngressCIDR:
         Description: IP range of the SecurityGroupIngress of the web servers
         Type: String
         Default: 0.0.0.0/0
 
-    WSEgressCIDR:
+    NodesEgressCIDR:
         Description: IP range of the SecurityGroupEgress of the web servers
         Type: String
         Default: 0.0.0.0/0
@@ -43,12 +43,17 @@ Parameters:
     LCImageId:
         Description: Launch config image id
         Type: String
-        Default: ami-0d1cd67c26f5fca19
+        Default: ami-0f53c7a1236d06961
     
     LCKeyName:
         Description: Launch config key name
         Type: String
-        Default: webservers-udacity-project2
+        Default: nodes-udacity-project2
+
+    WorkerNodeBootstrapArguments:
+        Description: Arguments to pass to the bootstrap script. See files/bootstrap.sh in https://github.com/awslabs/amazon-eks-ami
+        Default: "--kubelet-extra-args --node-labels=nodetype=worker"
+        Type: String
     
 Resources:
 
@@ -69,8 +74,8 @@ Resources:
               FromPort: 80
               ToPort: 80
               CidrIp: !Ref LBEgressCIDR
-    
-    WebServersSecGroup:
+
+    NodesSecGroup:
         Type: AWS::EC2::SecurityGroup
         Properties:
             GroupDescription: HTTP to host, SSH from local (for connection from bastion)
@@ -78,52 +83,65 @@ Resources:
                 Fn::ImportValue:
                     !Sub "${EnvName}-VPCID"
             SecurityGroupIngress:
-            - IpProtocol: tcp
-              FromPort: 80
-              ToPort: 80
-              CidrIp: !Ref WSIngressCIDR
+            - IpProtocol: '-1'
+              FromPort: 0
+              ToPort: 65535
+              CidrIp: !Ref NodesIngressCIDR
+              Description: Allow traffic from all nodes
             - IpProtocol: tcp
               FromPort: 22
               ToPort: 22
               CidrIp: !Ref VPCCIDR
+              Description: Allow traffic from bastion
+            - IpProtocol: tcp
+              FromPort: 1025
+              ToPort: 65535
+              Description: Allow traffic from control plane
+            - IpProtocol: tcp
+              FromPort: 443
+              ToPort: 443
+              Description: Allow traffic from control plane
             SecurityGroupEgress:
             - IpProtocol: tcp
               FromPort: 0
               ToPort: 65535
-              CidrIp: !Ref WSEgressCIDR
-    
-    IAMRoleS3Reader:
-        Type: AWS::IAM::InstanceProfile
-        Properties:
-            Roles:
-                - S3Reader
+              CidrIp: !Ref NodesEgressCIDR
+            - IpProtocol: tcp
+              FromPort: 1025
+              ToPort: 65535
+              Description: Allow traffic to control plane
+            - IpProtocol: tcp
+              FromPort: 443
+              ToPort: 443
+              Description: Allow traffic to control plane
     
     LaunchConfig:
         Type: AWS::AutoScaling::LaunchConfiguration
         Properties:
             AssociatePublicIpAddress: false
-            IamInstanceProfile: !Ref IAMRoleS3Reader
+            IamInstanceProfile: arn:aws:iam::244468422315:role/EKSNodeInstanceRole
             UserData:
                 Fn::Base64: !Sub |
                     #!/bin/bash
-                    apt-get update -y
-                    apt-get install unzip awscli -y
-                    apt-get install apache2 -y
-                    systemctl start apache2.service
-                    cd /var/www/html
-                    aws s3 cp s3://udacity-devops-project2/index.zip .
-                    unzip -o index.zip
-            ImageId: !Ref LCImageId
+                    set -o xtrace
+                    /etc/eks/bootstrap.sh ${EnvName}-CLUSTER ${WorkerNodeBootstrapArguments}
+                    /opt/aws/bin/cfn-signal --exit-code $? \
+                            --stack  ${AWS::StackName} \
+                            --resource NodeGroup  \
+                            --region ${AWS::Region}
+            ImageId: ami-0f53c7a1236d06961
             KeyName: !Ref LCKeyName
             SecurityGroups:
-            - Ref: WebServersSecGroup
+            - Ref: NodesSecGroup
             InstanceType: !Ref LCInstanceType
             BlockDeviceMappings:
-            - DeviceName: "/dev/sdk"
+            - DeviceName: "/dev/xvda"
               Ebs:
-                VolumeSize: '10'
+                VolumeSize: '20'
+                VolumeType: gp2
+                DeleteOnTermination: true
     
-    WebAppASGroup:
+    NodesASGroup:
         Type: AWS::AutoScaling::AutoScalingGroup
         Properties:
             VPCZoneIdentifier:
@@ -136,6 +154,14 @@ Resources:
             TargetGroupARNs:
             - Ref: WebAppTargetGroup
             HealthCheckGracePeriod: 60
+            Tags:
+            - Key: 
+                Fn::Sub:
+                - 'kubernetes.io/cluster/${EKSCluster}'
+                - EKSCluster: 
+                    Fn::ImportValue: !Sub "${EnvName}-CLUSTER"
+              Value: owned
+              PropagateAtLaunch: true
     
     LoadBalancer:
         Type: AWS::ElasticLoadBalancingV2::LoadBalancer
