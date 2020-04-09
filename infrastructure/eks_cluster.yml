@@ -14,10 +14,17 @@ Resources:
   EKSCluster:
     Type: "AWS::EKS::Cluster"
     Properties:
-      Name: !Join [ "", [ !Ref 'AWS::StackName', "-EKS-Cluster" ] ]
+      Name: !Sub "${EnvName}-CLUSTER"
       ResourcesVpcConfig:
         SecurityGroupIds:
           Fn::ImportValue: !Sub "${EnvName}-CPSG"
         SubnetIds:
           Fn::ImportValue: !Sub "${EnvName}-SUBNETS"
       RoleArn: arn:aws:iam::244468422315:role/eksRole
+
+Outputs:
+
+  EKSCluster:
+    Description: The EKS Cluster
+    Value: !Ref EKSCluster
+    
