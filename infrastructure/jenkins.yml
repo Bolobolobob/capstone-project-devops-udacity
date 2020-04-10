@@ -54,23 +54,23 @@ Resources:
                     VolumeSize: '20'
             UserData:
                 Fn::Base64: !Sub |
-                #!/bin/bash
-                apt-get update -y
-                apt install -y default-jdk
-                wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
-                sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
-                sudo apt-get update
-                sudo apt-get install -y jenkins
-                sudo systemctl start jenkins
-                sudo systemctl enable jenkins
-                sudo systemctl status jenkins
-                apt install tidy -y
-                sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.17.5/hadolint-Linux-x86_64
-                sudo chmod +x /bin/hadolint
-                sudo apt install docker.io -y
-                sudo apt-get update && sudo apt-get install -y apt-transport-https
-                curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-                echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
-                sudo apt-get update
-                sudo apt-get install -y kubectl
+                    #!/bin/bash
+                    apt-get update -y
+                    apt install -y default-jdk
+                    wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
+                    sudo sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+                    sudo apt-get update
+                    sudo apt-get install -y jenkins
+                    sudo systemctl start jenkins
+                    sudo systemctl enable jenkins
+                    sudo systemctl status jenkins
+                    apt install tidy -y
+                    sudo wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v1.17.5/hadolint-Linux-x86_64
+                    sudo chmod +x /bin/hadolint
+                    sudo apt install docker.io -y
+                    sudo apt-get update && sudo apt-get install -y apt-transport-https
+                    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+                    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list
+                    sudo apt-get update
+                    sudo apt-get install -y kubectl
 
