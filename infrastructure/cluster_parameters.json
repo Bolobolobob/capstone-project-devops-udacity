@@ -1,0 +1,38 @@
+[
+    {
+        "ParameterKey": "EnvName",
+        "ParameterValue": "CapstoneUdacity"
+    },
+    {
+        "ParameterKey": "KubernetesVersion",
+        "ParameterValue": "1.14"
+    },
+    {
+        "ParameterKey": "KeyName",
+        "ParameterValue": "eks-node-key"
+    },
+    {
+        "ParameterKey": "NodeImageIdSSMParam",
+        "ParameterValue": "ami-0f53c7a1236d06961"
+    },
+    {
+        "ParameterKey": "NodeInstanceType",
+        "ParameterValue": "t3.medium"
+    },
+    {
+        "ParameterKey": "NodeAutoScalingGroupDesiredCapacity",
+        "ParameterValue": "4"
+    },
+    {
+        "ParameterKey": "NodeVolumeSize",
+        "ParameterValue": "20"
+    },
+    {
+        "ParameterKey": "ClusterName",
+        "ParameterValue": "CapstoneCluster"
+    },
+    {
+        "ParameterKey": "ClusterRole",
+        "ParameterValue": "arn:aws:iam::244468422315:role/eksRole"
+    }
+]
