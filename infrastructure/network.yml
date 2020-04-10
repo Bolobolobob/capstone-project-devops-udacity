@@ -84,6 +84,8 @@ Resources:
                   Value: !Sub "${EnvName} Private Subnet 1"
                 - Key: kubernetes.io/role/internal-elb
                   Value: 1
+                - Key: kubernetes.io/cluster/CapstoneCluster
+                  Value: shared
 
     PrivateSubnet2:
         Type: AWS::EC2::Subnet
@@ -96,6 +98,8 @@ Resources:
                   Value: !Sub ${EnvName} Private Subnet 2
                 - Key: kubernetes.io/role/internal-elb
                   Value: 1
+                - Key: kubernetes.io/cluster/CapstoneCluster
+                  Value: shared
 
     InternetGateway:
         Type: AWS::EC2::InternetGateway
@@ -209,12 +213,6 @@ Resources:
         Properties:
             RouteTableId: !Ref PrivateRouteTable2
             SubnetId: !Ref PrivateSubnet2
-    
-    ControlPlaneSecurityGroup:
-        Type: AWS::EC2::SecurityGroup
-        Properties:
-            GroupDescription: Cluster communication with worker nodes
-            VpcId: !Ref VPC
 
 Outputs:
 
@@ -284,8 +282,3 @@ Outputs:
         Export:
             Name: !Sub ${EnvName}-SUBNETS
     
-    SecurityGroups:
-        Description: Security group for the cluster control plane communication with worker nodes
-        Value: !Join [ ",", [ !Ref ControlPlaneSecurityGroup ] ]
-        Export:
-            Name: !Sub ${EnvName}-CPSG
