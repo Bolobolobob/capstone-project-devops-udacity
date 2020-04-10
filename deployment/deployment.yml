@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: capstone-chatbot
+  labels:
+    app: capstone-chatbot
+  namespace: default
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: capstone-chatbot
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: capstone-chatbot
+    spec:
+      containers:
+      - image: Bolobolobob/capstone-chatbot:latest
+        imagePullPolicy: Always
+        name: capstone-chatbot
+        ports:
+        - containerPort: 80
+          protocol: TCP
