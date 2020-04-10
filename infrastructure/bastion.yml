@@ -1,7 +1,7 @@
 Description: >
     Charles Gery / Udacity
     Deploy a High-Availability Web App using CloudFormation
-    This template deploys a bastion in a private subnet
+    This template deploys a bastion in a public subnet
 
 Parameters:
 
