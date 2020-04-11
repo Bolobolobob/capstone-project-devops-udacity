@@ -21,7 +21,7 @@ spec:
         app: capstone-chatbot
     spec:
       containers:
-      - image: Bolobolobob/capstone-chatbot:latest
+      - image: bolobolobobjenkins/capstone-chatbot:latest
         imagePullPolicy: Always
         name: capstone-chatbot
         ports:
