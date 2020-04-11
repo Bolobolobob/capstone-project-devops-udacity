@@ -15,7 +15,7 @@ pipeline {
     stage('Build Docker') {
       steps {
         sh "echo 'Building Docker image'"
-        sh "make build"
+        sh "sudo docker build -t ${registry} ."
       }
     }
     stage('Login to Dockerhub') {
@@ -29,8 +29,7 @@ pipeline {
     stage('Upload to Dockerhub'){
       steps {
         sh "echo 'Uploading to DockerHub'"
-        sh "docker build -t ${registry} ."
-        sh "docker tag ${registry} ${registry}"
+        sh "sudo docker tag ${registry} ${registry}"
         sh "docker push ${registry}"
       }
     }
