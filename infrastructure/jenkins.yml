@@ -80,4 +80,13 @@ Resources:
                     sudo apt-get install -y kubectl
                     sudo apt install make -y
                     sudo apt install pylint3 -y
+                    sudo groupadd docker
+                    sudo usermod -aG docker $USER
+                    sudo usermod -aG docker jenkins
+                    newgrp docker
+                    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+                    sudo apt install unzip -y
+                    unzip awscliv2.zip
+                    sudo ./aws/install
+
 
