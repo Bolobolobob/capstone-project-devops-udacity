@@ -6,7 +6,6 @@ metadata:
     app: capstone-chatbot
   namespace: default
 spec:
-  replicas: 5
   selector:
     matchLabels:
       app: capstone-chatbot
@@ -27,6 +26,7 @@ spec:
         ports:
         - containerPort: 5000
           protocol: TCP
+---
 
 apiVersion: v1
 kind: Service
@@ -45,3 +45,18 @@ spec:
       protocol: TCP
       port: 443
       targetPort: 500
+
+---
+
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: capstone-chatbot
+spec:
+  scaleTargetRef:
+    apiVersion: extensions/v1beta1
+    kind: Deployment
+    name: capstone-chatbot
+  minReplicas: 2
+  maxReplicas: 8
+  targetCPUUtilizationPercentage: 80
