@@ -15,7 +15,7 @@ pipeline {
     stage('Build Docker') {
       steps {
         sh "echo 'Building Docker image'"
-        sh "sudo docker build -t ${imageTag} ."
+        sh "docker build -t ${imageTag} ."
       }
     }
     stage('Login to Dockerhub') {
@@ -29,7 +29,7 @@ pipeline {
     stage('Upload to Dockerhub'){
       steps {
         sh "echo 'Uploading to DockerHub'"
-        sh "sudo docker tag ${imageTag} ${imageTag}"
+        sh "docker tag ${imageTag} ${imageTag}"
         sh "docker push ${imageTag}"
       }
     }
