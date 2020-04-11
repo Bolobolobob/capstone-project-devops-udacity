@@ -12,8 +12,5 @@ lint:
 	pylint3 --disable=E0401,C0111,C0114,C0103,C0116 ./flask_app/app.py
 	tidy --escape-scripts no -q -e flask_app/templates/*.html
 
-build:
-	docker build -t chatbot-capstone .
-
 run:
 	python flask_app/app.py
