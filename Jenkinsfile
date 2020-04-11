@@ -2,7 +2,7 @@
 
 pipeline {
   environment {
-    imageTag = 'bolobolobob/capstone-chatbot'
+    imageTag = 'bolobolobobjenkins/capstone-chatbot'
   }
   agent any
   stages {
