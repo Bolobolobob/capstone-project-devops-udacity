@@ -10,7 +10,7 @@ To do this project I used the open source flask web implementation of ChatterBot
 
 The following infrastructure is deployed :
 
-![Chart of infrastructure](https://github.com/Bolobolobob/capstone-project-devops-udacity/CapstoneChart.jpeg)
+![Chart of infrastructure](https://github.com/Bolobolobob/capstone-project-devops-udacity/blob/master/CapstoneChart.jpeg)
 
 
 ## Installation
