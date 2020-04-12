@@ -35,7 +35,9 @@ To deploy these stacks you can use the create.bat and update.bat scripts (for wi
 
 Alternatively you can use :
 
-`aws cloudformation create-stack --stack-name %1 --template-body file://stack-file.yml  --parameters file://stack_parameters-file.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=region-name`
+```
+aws cloudformation create-stack --stack-name %1 --template-body file://stack-file.yml  --parameters file://stack_parameters-file.json --capabilities "CAPABILITY_IAM" "CAPABILITY_NAMED_IAM" --region=region-name
+```
 
 ### Creating a Kubernetes deployment
 
@@ -47,8 +49,10 @@ If you don't want to use the CI/CD pipeline and Jenkins, you can deploy directly
 docker tag image-tag image-tag
 docker push image-tag`
 3. Create a deployment :
-`aws eks --region region-name update-kubeconfig --name CapstoneCluster
-kubectl apply -f deployment/deployment.yml`
+```
+aws eks --region region-name update-kubeconfig --name CapstoneCluster
+kubectl apply -f deployment/deployment.yml
+```
 
 ### Creating a CI/CD pipeline with Jenkins
 
