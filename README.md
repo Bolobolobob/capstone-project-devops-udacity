@@ -21,6 +21,13 @@ When an update is pushed to the github repository, Jenkins runs the pipeline :
 * The docker image is pushed to DockerHub
 * The deployment image of the EKS cluster is updated using a rolling update
 
+## Screenshots
+
+In the screenshot folder the following screenshots are provided :
+* lint_fail_screenshot.PNG shows how the Jenkins pipeline fails when there is an error in the code
+* successful_lint.PNG shows on the other hand how the pipeline successfuly completes when there is no linting error
+* rollout_screenshot.PNG shows how the pods are correctly replaced during a rolling update : we can first see all the pods running, then an update occurs and the pods are replaced following the rolling update policy, and finaly the status of the update is successful
+
 ## Installation
 
 ### Deploying the infrastructure
