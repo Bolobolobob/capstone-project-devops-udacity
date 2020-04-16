@@ -29,7 +29,7 @@ pipeline {
     stage('Upload to Dockerhub'){
       steps {
         sh "echo 'Uploading to DockerHub'"
-        sh "docker tag ${imageTag} ${imageTag}"
+        sh "docker tag ${imageTag} ${imageTag}:${env.BUILD_ID}"
         sh "docker push ${imageTag}"
       }
     }
@@ -38,7 +38,7 @@ pipeline {
         sh "echo 'Deploying app to cluster'"
         withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
             sh "aws eks --region us-west-2 update-kubeconfig --name CapstoneCluster"
-            sh "kubectl set image deployments/capstone-chatbot capstone-chatbot=bolobolobobjenkins/capstone-chatbot:latest"
+            sh "kubectl set image deployments/capstone-chatbot capstone-chatbot=bolobolobobjenkins/capstone-chatbot:${env.BUILD_ID}"
         }
       }
     }
