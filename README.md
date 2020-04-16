@@ -41,13 +41,18 @@ aws cloudformation create-stack --stack-name %1 --template-body file://stack-fil
 
 ### Creating a Kubernetes deployment
 
+To create a deployment you need to do : `kubectl apply -f deployment/deployment.yml` after the infrastructure has been correctly deployed.
+After that, the CI/CD pipeline will automatically update your deployment using rolling updates.
+
 If you don't want to use the CI/CD pipeline and Jenkins, you can deploy directly the app to the cluster you just created. For that you will need :
 
 1. To build an image of the app : `docker build -t image-tag .`
 2. Login and push it to your container repo. For instance with DockerHub :
-`docker login -u username -p password
+```
+docker login -u username -p password
 docker tag image-tag image-tag
-docker push image-tag`
+docker push image-tag
+```
 3. Create a deployment :
 ```
 aws eks --region region-name update-kubeconfig --name CapstoneCluster
