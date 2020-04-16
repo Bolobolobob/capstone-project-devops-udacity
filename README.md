@@ -27,6 +27,9 @@ In the screenshot folder the following screenshots are provided :
 * lint_fail_screenshot.PNG shows how the Jenkins pipeline fails when there is an error in the code
 * successful_lint.PNG shows on the other hand how the pipeline successfuly completes when there is no linting error
 * rollout_screenshot.PNG shows how the pods are correctly replaced during a rolling update : we can first see all the pods running, then an update occurs and the pods are replaced following the rolling update policy, and finaly the status of the update is successful
+* cluster_running.PNG showing that the cluster is correclty deployed in EKS
+* deployment_success_screenshot.PNG showing that the app is correclty deployed in Jenkins
+* running_instances_screenshot.PNG showing that the nodes are correctly running in EC2. The active instances in this screenshot are the Jenkins server and the 4 nodes that were deployed
 
 ## Installation
 
