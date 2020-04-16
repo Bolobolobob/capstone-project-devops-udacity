@@ -38,7 +38,7 @@ pipeline {
         sh "echo 'Deploying app to cluster'"
         withAWS(credentials: 'aws-credentials', region: 'us-west-2') {
             sh "aws eks --region us-west-2 update-kubeconfig --name CapstoneCluster"
-            sh "kubectl apply -f deployment/deployment.yml"
+            sh "kubectl set image deployments/capstone-chatbot capstone-chatbot=bolobolobobjenkins/capstone-chatbot:latest"
         }
       }
     }
