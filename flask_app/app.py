@@ -12,6 +12,8 @@ trainer.train("chatterbot.corpus.english")
 def home():
     return render_template("index.html")
 
+This is an error
+
 @app.route("/get")
 def get_bot_response():
     userText = request.args.get('msg')
