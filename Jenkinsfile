@@ -46,6 +46,7 @@ pipeline {
       steps {
         sh "echo 'Cleaning docker'"
         sh "docker system prune -f"
+        sh "docker image rm bolobolobobjenkins/capstone-chatbot:${env.BUILD_ID}"
       }
     }
   }

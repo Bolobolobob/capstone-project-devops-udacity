@@ -6,7 +6,6 @@ This project is part of the Udacity Cloud Devops Engineer Nanodegree.
 It aims at creating an infrastructure and a CI/CD pipeline with rolling development for an app hosted in a Kubernetes cluster.
 To do this project I used the open source flask web implementation of ChatterBot developped by chamkank : https://github.com/chamkank/flask-chatterbot
 
-The app is currently available at this address : http://a32c6e15c7fe511ea8bf502b4def2ddd-1186078379.us-west-2.elb.amazonaws.com/
 ## Infrastructure
 
 The following infrastructure is deployed :
